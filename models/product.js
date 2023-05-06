@@ -1,75 +1,98 @@
-const getDB = require("../util/database").getDB;
-const mongodb = require("mongodb");
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-class Product {
-    constructor(title, price, description, imageURl, id, userId) {
-        this.title = title;
-        this.price = price;
-        this.description = description;
-        this.imageURl = imageURl;
-        this._id = id ? new mongodb.ObjectId(id) : null;
-        this.userId = userId;
+const productSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true
     }
-    save() {
-        const db = getDB();
-        return db
-            .collection("products")
-            .insertOne(this)
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-    static fetchAll() {
-        const db = getDB();
-        return db
-            .collection("products")
-            .find()
-            .toArray()
-            .then((products) => {
-                return products;
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-    static findById(prodId) {
-        const db = getDB();
-        return db
-            .collection("products")
-            .find({ _id: new mongodb.ObjectId(prodId) })
-            .next()
-            .then((product) => {
-                console.log(product);
-                return product;
-            })
-            .catch((err) => console.log(err));
-    }
-}
+
+})
+module.exports = mongoose.model("Product", productSchema);
+// const getDB = require("../util/database").getDB;
+// const mongodb = require("mongodb");
+
+// class Product {
+//     constructor(title, price, description, imageURl, id, userId) {
+//         this.title = title;
+//         this.price = price;
+//         this.description = description;
+//         this.imageURl = imageURl;
+//         this._id = id ? new mongodb.ObjectId(id) : null;
+//         this.userId = userId;
+//     }
+//     save() {
+//         const db = getDB();
+//         return db
+//             .collection("products")
+//             .insertOne(this)
+//             .then((result) => {
+//                 console.log(result);
+//             })
+//             .catch((err) => {
+//                 console.log(err);
+//             });
+//     }
+//     static fetchAll() {
+//         const db = getDB();
+//         return db
+//             .collection("products")
+//             .find()
+//             .toArray()
+//             .then((products) => {
+//                 return products;
+//             })
+//             .catch((err) => {
+//                 console.log(err);
+//             });
+//     }
+//     static findById(prodId) {
+//         const db = getDB();
+//         return db
+//             .collection("products")
+//             .find({ _id: new mongodb.ObjectId(prodId) })
+//             .next()
+//             .then((product) => {
+//                 console.log(product);
+//                 return product;
+//             })
+//             .catch((err) => console.log(err));
+//     }
+// }
 
 
-/* const Product = sequelize.define("product", {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  title: Sequelize.STRING,
-  price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
- */
-module.exports = Product;
+// /* const Product = sequelize.define("product", {
+//   id: {
+//     type: Sequelize.INTEGER,
+//     autoIncrement: true,
+//     allowNull: false,
+//     primaryKey: true,
+//   },
+//   title: Sequelize.STRING,
+//   price: {
+//     type: Sequelize.DOUBLE,
+//     allowNull: false,
+//   },
+//   imageUrl: {
+//     type: Sequelize.STRING,
+//     allowNull: false,
+//   },
+//   description: {
+//     type: Sequelize.STRING,
+//     allowNull: false,
+//   },
+// });
+//  */
+// module.exports = Product;
